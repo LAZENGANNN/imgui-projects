@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <string>
 #include <filesystem>
+#include <cmath>
+#include <format>
 
 struct Line {
 	double x1;
@@ -21,6 +23,12 @@ struct Line {
 	}
 
 };
+
+bool doubleComapre(double p1, double p2){
+	// double a = 0.0001;
+	// return (abs(p1-p2) < (pow(10,-9)));
+	return (fabs(p1-p2) < 0.000000001);
+}
 
 void printLines(std::vector<Line> testvec) {
 	printf("\n");
@@ -62,16 +70,16 @@ int isOneLine(Line & l1, Line& l2) {
 
 	if (!(vec1x * vec2y == vec1y * vec2x)) return 0;//(не) лежат на одной линии (коллиенарность)
 
-	if (l1.x2 == l2.x1 && l1.y2 == l2.y1) {
+	if (doubleComapre(l1.x2, l2.x1) && doubleComapre(l1.y2, l2.y1)) {
 		mergetype = 1;
 	}
-	else if (l1.x1 == l2.x2 && l1.y1 == l2.y2) {
+	else if (doubleComapre(l1.x1, l2.x2) && doubleComapre(l1.y1, l2.y2)) {
 		mergetype = 2;
 	}
-	else if (l1.x1 == l2.x1 && l1.y1 == l2.y1) {
+	else if (doubleComapre(l1.x1, l2.x1) && doubleComapre(l1.y1, l2.y1)) {
 		mergetype = 3;
 	}
-	else if (l1.x2 == l2.x2 && l1.y2 == l2.y2) {
+	else if (doubleComapre(l1.x2, l2.x2) && doubleComapre(l1.y2, l2.y2)) {
 		mergetype = 4;
 	}
 
@@ -248,10 +256,27 @@ for (const auto& f : files) {
 		return 0;
 	}
 
+		const auto digits = std::numeric_limits<double>::digits10;
+
 	for (const auto& l : testvec) {
 		//printf("(%.15lf;%.15lf) -- (%.15lf;%.15lf)\n", l.x1, l.y1, l.x2, l.y2);
-		outFile << l.x1 << " " << l.y1 << " " << l.x2 << " " << l.y2 << std::endl;
+		outFile 
+		 << std::setprecision(17) << l.x1 << " "
+		 << std::setprecision(17) << l.y1 << " "
+		 << std::setprecision(17) << l.x2 << " " 
+		 << std::setprecision(17) << l.y2 << std::endl;
+		 
+		 
+		// outFile << l.x1 << " " << l.y1 << " " << l.x2 << " " << l.y2 << std::endl;
+
+		//outFile 
+		//  << std::format("{:f}", l.x1) << l.x1 << " "
+		//  << std::format("{:f}", l.y1)<< l.y1 << " "
+		//  << std::format("{:f}", l.x2) << l.x2 << " " 
+		//  << std::format("{:f}", l.y2) << l.y2 << std::endl;
 	}
+
+
 
 	outFile.close();
 
