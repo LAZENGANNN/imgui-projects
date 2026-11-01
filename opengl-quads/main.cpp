@@ -46,22 +46,22 @@ int main()
 
         ImGui::Render();
 
-        int w, h;
-        glfwGetFramebufferSize(window, &w, &h);
-        glViewport(0, 0, w, h);
+        int glfw_width, glfw_height;
+        glfwGetFramebufferSize(window, &glfw_width, &glfw_height);
+        glViewport(0, 0, glfw_width, glfw_height);
         
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        int x = (int)(pos.x );
-        int y = (int)(pos.y );
+        float x = pos.x;
+        float y = pos.y;
 
-        int ww = (int)(size.x);
-        int hh = (int)(size.y);
+        float imgui_width = size.x;
+        float imgui_height = size.y;
 
-        int y_bottom = h - y - hh;
+        float y_bottom = glfw_height - pos.y - size.y;
 
-        glViewport(x, y_bottom, ww, hh);
+        glViewport(pos.x, y_bottom, imgui_width, imgui_height);
 
         glBegin(GL_TRIANGLES);
         glColor3f(1.0f, 0.5f, 1.0f);
